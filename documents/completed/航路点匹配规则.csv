@@ -1,0 +1,3 @@
+﻿dat文件part7,数据源,FIR位置,匹配字段
+"""E""或""P""",waypoints.txt,dat文件part6,"(航点名, FIR)"
+"""D""",earth_nav.dat,dat文件part6,"(航点名, FIR)"

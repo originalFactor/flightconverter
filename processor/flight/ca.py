@@ -1,0 +1,54 @@
+# Copyright (C) 2025 originalFactor
+#
+# This file is part of scripts.
+#
+# scripts is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# scripts is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with scripts.  If not, see <https://www.gnu.org/licenses/>.
+
+from dataclasses import dataclass
+
+
+@dataclass
+class CA:
+    record: str
+    steering: int
+    heading: float
+    height_lim: int
+    height_1: int
+    height_2: int
+    speed_lim: int
+    speed_1: int
+    speed_2: int
+    special: int
+    passthrough: int
+
+    def __init__(self, ap: str, data: list[str]):
+        self.record = "IF"
+        self.waypoint = data[4]
+        self.latitude, self.longitude = getpos.get_waypoint(
+            ap, data[5], self.waypoint, data[6]
+        ) or (0, 0)
+        self.nav_station = data[13] or " "
+        self.azimuth = float(data[18]) / 10
+        self.distance = float(data[19]) / 10
+        self.height_1 = int(data[24])
+        self.height_2 = int(data[25])
+        self.height_lim = gethl(data[23], self.height_1)
+        self.speed_1 = int(data[28])
+        self.speed_2 = 0
+        self.speed_lim = int(bool(self.speed_1))
+        self.special = getspec(data[8][3])
+        self.passthrough = int(data[8][1] == "Y")
+
+    def __str__(self):
+        return f"{self.record},{self.waypoint},{self.latitude},{self.longitude},{self.nav_station},{self.azimuth},{self.distance},{self.height_lim},{self.height_1},{self.height_2},{self.speed_lim},{self.speed_1},{self.speed_2},{self.special},{self.passthrough}"
