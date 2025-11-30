@@ -15,31 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with scripts.  If not, see <https://www.gnu.org/licenses/>.
 
-from dataclasses import dataclass
 from .tools import gethl, getspec, getturn
 from ..getpos import get_waypoint
+from .base import FlightSegment
 
 
-@dataclass
-class AF:
-    record: str
-    waypoint: str
-    latitude: float
-    longitude: float
-    steering: int
-    nav_station: str
-    sweeping: float | None
-    dme: float
-    start_radius: float
-    height_lim: int
-    height_1: int
-    height_2: int
-    speed_lim: int
-    speed_1: int
-    speed_2: int
-    special: int
-    passthrough: int
-
+class AF(FlightSegment):
     def __init__(self, ap: str, data: list[str]):
         self.record = "AF"
         self.waypoint = data[4]
